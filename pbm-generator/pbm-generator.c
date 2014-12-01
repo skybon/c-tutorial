@@ -1,8 +1,18 @@
 #include <stdio.h>
-int width=100;								//ширина холста
-int height=100;								//высота холста
 
+//typedef struct Timage Timage;
+
+struct Timage {
+int pimg;
+int width;								//ширина холста
+int height;								//высота холста
 int canvas[100][100];							//сам холст
+};
+//ФЛАГИ
+int flag_interactive=0;
+int flag_interactive_canvas=0;
+
+
 
 void draw_horizontal_line(int hline_y,int hline_length) {		//горизонтальная линия длиной в холст
 	int x;								//счётчик
@@ -30,15 +40,22 @@ void draw_grid(){
 	int cell_height;
 	int cell_width;
 
-
-	printf("# Введите ширину сетки: ");
-	scanf("%i", &grid_width);
-	printf("# Введите высоту сетки: ");
-	scanf("%i", &grid_height);
-	printf("# Введите ширину ячеек: ");
-	scanf("%i", &cell_width);
-	printf("# Введите высоту ячеек: ");
-	scanf("%i", &cell_height);
+	if (interactive==1) {
+		printf("# Введите ширину сетки: ");
+		scanf("%i", &grid_width);
+		printf("# Введите высоту сетки: ");
+		scanf("%i", &grid_height);
+		printf("# Введите ширину ячеек: ");
+		scanf("%i", &cell_width);
+		printf("# Введите высоту ячеек: ");
+		scanf("%i", &cell_height);
+	}
+	else {
+		grid_width=50;
+		grid_height=50;
+		cell_width=5;
+		cell_height=5;
+	}
 
 	for (ypos=0;ypos<grid_width;ypos++){
 		if (ypos % (cell_width+1) == 0){
@@ -54,7 +71,7 @@ void draw_grid(){
 }
 
 void show() {
-	printf("##################################\n\n# Создано следующее PBM-изображение:\n\n##################################\n\n# CREATED BY PBM GENERATOR 0.1 #\n# (c) Artem Vorotnikov <artem@vorotnikov.me>, 2014\n\n##################################\n\nP1\n%i %i\n", width, height);
+	printf("P1\n##################################\n#\n# Создано следующее PBM-изображение:\n#\n##################################\n#\n# CREATED BY PBM GENERATOR 0.1\n# (c) Artem Vorotnikov <artem@vorotnikov.me>, 2014\n#\n##################################\n#\n%i %i\n", width, height);
 	int x;
 	int y;
 
@@ -67,30 +84,40 @@ void show() {
 }
 
 void init() {
+	if (flag_interactive_canvas==1) {
+	printf("Введите ширину холста: ");
+	scanf("%i", &Timage* width);
+	printf("Введите высоту холста: ");
+	scanf("%i", &Timage* height);
+	}
 
-	//printf("Введите ширину холста: ");
-	//scanf("%i", &width);
-	//printf("Введите высоту холста: ");
-	//scanf("%i", &height);
-
-	//int canvas[width][height];
-
-
-	printf("Создан холст размером %i x %i \n", width, height);
+	int canvas[Timage* width][Timage* height];
+	if (flag_interactive==1){
+		printf("# Создан холст размером %i x %i \n", Timage* width, Timage* height);
+	}
 }
 
 void main(){
-	int action_choice;						//выбор действия
+	Timage* pimg=1;
+	Timage* width=100;
+	Timage* height=100;
 	init();
-	printf("# Выберите действие (0 для помощи): ");
-	scanf("%i", &action_choice);
-	if (action_choice==0) {
-		printf("# Доступны следующие действия:\n    1 - вывести изображение на экран и выйти.\n    2 - нарисовать сетку.\n");
+	if (flag_interactive==1) {
+		int action_choice;						//выбор действия
+		printf("# Выберите действие (0 для помощи): ");
+		scanf("%i", &action_choice);
+		if (action_choice==0) {
+			printf("# Доступны следующие действия:\n    1 - вывести изображение на экран и выйти.\n    2 - нарисовать сетку.\n");
+		}
+		else if (action_choice==1) {
+			show();
+		}
+		else if (action_choice==2) {
+			draw_grid();
+			show();
+		}
 	}
-	else if (action_choice==1) {
-		show();
-	}
-	else if (action_choice==2) {
+	else {
 		draw_grid();
 		show();
 	}
