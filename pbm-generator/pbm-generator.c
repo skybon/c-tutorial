@@ -1,17 +1,13 @@
 #include <stdio.h>
 
-//typedef struct Timage Timage;
-
 struct Timage {
 int width;								//ширина холста
 int height;								//высота холста
 int canvas[100][100];							//сам холст
 };
-//ФЛАГИ
-int flag_interactive=0;
-int flag_interactive_canvas=0;
 
 struct Timage a;
+struct Timage *pimg;
 
 void draw_horizontal_line(int hline_y,int hline_length) {		//горизонтальная линия длиной в холст
 	int x;								//счётчик
@@ -33,28 +29,11 @@ void draw_grid(){
 	int hpos;							//счётчик
 	int ypos;							//счётчик
 
-	int grid_height;
-	int grid_width;
+	int grid_height=50;
+	int grid_width=50;
 
-	int cell_height;
-	int cell_width;
-
-	if (flag_interactive==1) {
-		printf("# Введите ширину сетки: ");
-		scanf("%i", &grid_width);
-		printf("# Введите высоту сетки: ");
-		scanf("%i", &grid_height);
-		printf("# Введите ширину ячеек: ");
-		scanf("%i", &cell_width);
-		printf("# Введите высоту ячеек: ");
-		scanf("%i", &cell_height);
-	}
-	else {
-		grid_width=50;
-		grid_height=50;
-		cell_width=5;
-		cell_height=5;
-	}
+	int cell_height=5;
+	int cell_width=5;
 
 	for (ypos=0;ypos<grid_width;ypos++){
 		if (ypos % (cell_width+1) == 0){
@@ -69,7 +48,8 @@ void draw_grid(){
 	}
 }
 
-void show() {
+void show(struct Timage* p) {
+    pimg=&a;
 	printf("P1\n##################################\n#\n# Создано следующее PBM-изображение:\n#\n##################################\n#\n# CREATED BY PBM GENERATOR 0.1\n# (c) Artem Vorotnikov <artem@vorotnikov.me>, 2014\n#\n##################################\n#\n%i %i\n", a.width, a.height);
 	int x;
 	int y;
@@ -82,45 +62,17 @@ void show() {
 	}
 }
 
-void init(int w, int h) {
-	if (flag_interactive_canvas==1) {
-	printf("Введите ширину холста: ");
-	scanf("%i", w);
-	printf("Введите высоту холста: ");
-	scanf("%i", h);
-	}
-    //else {
-        //w=100;
-        //h=100;
-    //}
+void init(struct Timage *p,int w, int h) {
     a.width=w;
     a.height=h;
-	if (flag_interactive==1){
-		printf("# Создан холст размером %i x %i \n", w, h);
-	}
 }
 
 int main(){
-	init(10,10);
-	if (flag_interactive==1) {
-		int action_choice;						//выбор действия
-		printf("# Выберите действие (0 для помощи): ");
-		scanf("%i", &action_choice);
-		if (action_choice==0) {
-			printf("# Доступны следующие действия:\n    1 - вывести изображение на экран и выйти.\n    2 - нарисовать сетку.\n");
-		}
-		else if (action_choice==1) {
-			show();
-		}
-		else if (action_choice==2) {
-			draw_grid();
-			show();
-		}
-	}
-	else {
-		draw_grid();
-		show();
-	}
+    pimg = &a;
+	init(pimg,10,10);
+
+	draw_grid();
+	show(pimg);
 
 	return 0;
 }
