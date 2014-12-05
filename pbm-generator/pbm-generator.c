@@ -3,7 +3,6 @@
 //typedef struct Timage Timage;
 
 struct Timage {
-int pimg;
 int width;								//ширина холста
 int height;								//высота холста
 int canvas[100][100];							//сам холст
@@ -12,13 +11,13 @@ int canvas[100][100];							//сам холст
 int flag_interactive=0;
 int flag_interactive_canvas=0;
 
-
+struct Timage a;
 
 void draw_horizontal_line(int hline_y,int hline_length) {		//горизонтальная линия длиной в холст
 	int x;								//счётчик
 
 	for (x=0;x<hline_length;x++) {
-		canvas[x][hline_y]=1;
+		a.canvas[x][hline_y]=1;
 	}
 }
 
@@ -26,7 +25,7 @@ void draw_vertical_line(int vline_x,int vline_length) {			//вертикальн
 	int y;								//счётчик
 
 	for (y=0;y<vline_length;y++){
-		canvas[vline_x][y]=1;
+		a.canvas[vline_x][y]=1;
 	}
 }
 
@@ -40,7 +39,7 @@ void draw_grid(){
 	int cell_height;
 	int cell_width;
 
-	if (interactive==1) {
+	if (flag_interactive==1) {
 		printf("# Введите ширину сетки: ");
 		scanf("%i", &grid_width);
 		printf("# Введите высоту сетки: ");
@@ -71,37 +70,38 @@ void draw_grid(){
 }
 
 void show() {
-	printf("P1\n##################################\n#\n# Создано следующее PBM-изображение:\n#\n##################################\n#\n# CREATED BY PBM GENERATOR 0.1\n# (c) Artem Vorotnikov <artem@vorotnikov.me>, 2014\n#\n##################################\n#\n%i %i\n", width, height);
+	printf("P1\n##################################\n#\n# Создано следующее PBM-изображение:\n#\n##################################\n#\n# CREATED BY PBM GENERATOR 0.1\n# (c) Artem Vorotnikov <artem@vorotnikov.me>, 2014\n#\n##################################\n#\n%i %i\n", a.width, a.height);
 	int x;
 	int y;
 
-	for (y=0;y<height;y++){
-		for(x=0;x<width;x++){
-			printf("%d ",canvas[x][y]);
+	for (y=0;y<a.height;y++){
+		for(x=0;x<a.width;x++){
+			printf("%d ",a.canvas[x][y]);
 		}
 		printf("\n");
 	}
 }
 
-void init() {
+void init(int w, int h) {
 	if (flag_interactive_canvas==1) {
 	printf("Введите ширину холста: ");
-	scanf("%i", &Timage* width);
+	scanf("%i", w);
 	printf("Введите высоту холста: ");
-	scanf("%i", &Timage* height);
+	scanf("%i", h);
 	}
-
-	int canvas[Timage* width][Timage* height];
+    //else {
+        //w=100;
+        //h=100;
+    //}
+    a.width=w;
+    a.height=h;
 	if (flag_interactive==1){
-		printf("# Создан холст размером %i x %i \n", Timage* width, Timage* height);
+		printf("# Создан холст размером %i x %i \n", w, h);
 	}
 }
 
-void main(){
-	Timage* pimg=1;
-	Timage* width=100;
-	Timage* height=100;
-	init();
+int main(){
+	init(10,10);
 	if (flag_interactive==1) {
 		int action_choice;						//выбор действия
 		printf("# Выберите действие (0 для помощи): ");
@@ -121,4 +121,6 @@ void main(){
 		draw_grid();
 		show();
 	}
+
+	return 0;
 }
