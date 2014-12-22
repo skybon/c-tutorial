@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 struct Timage {
 int width;								//ширина холста
@@ -8,6 +9,12 @@ int canvas[100][100];							//сам холст
 
 struct Timage a;
 struct Timage *pimg;
+
+int cell_height;
+int cell_width;
+
+int str_num;
+int col_num;
 
 void draw_horizontal_line(struct Timage *p,int hline_y,int hline_length) {		//горизонтальная линия длиной в холст
 	int x;								//счётчик
@@ -29,11 +36,9 @@ void draw_grid(){
 	int hpos;							//счётчик
 	int ypos;							//счётчик
 
-	int grid_height=50;
-	int grid_width=50;
 
-	int cell_height=5;
-	int cell_width=5;
+	int grid_height=(cell_height+1)*str_num+1;
+	int grid_width=(cell_width+1)*col_num+1;
 
 	for (ypos=0;ypos<grid_width;ypos++){
 		if (ypos % (cell_width+1) == 0){
@@ -63,14 +68,23 @@ void show(struct Timage* p) {
 }
 
 void init(struct Timage *p,int w, int h) {
-    p->width=w;
-    p->height=h;
+	p->width=w;
+	p->height=h;
 }
 
-int main(){
-    pimg = &a;
-	init(pimg,10,10);
+int main(int argc, char *argv[]){
+	if(argc<7)
+	{
+		printf("Недостаточно аргументов!");
+		return 0;
+	}
+	pimg = &a;
+	init(pimg,atoi(argv[1]),atoi(argv[2]));
 
+	cell_height=atoi(argv[3]);
+	cell_width=atoi(argv[4]);
+	str_num=atoi(argv[5]);
+	col_num=atoi(argv[6]);
 	draw_grid();
 	show(pimg);
 
