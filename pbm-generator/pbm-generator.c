@@ -13,7 +13,7 @@ struct Timage *pimg;
 int cell_height;
 int cell_width;
 
-int str_num;
+int row_num;
 int col_num;
 
 void draw_horizontal_line(struct Timage *p,int hline_y,int hline_length) {		//горизонтальная линия длиной в холст
@@ -37,7 +37,7 @@ void draw_grid(){
 	int ypos;							//счётчик
 
 
-	int grid_height=(cell_height+1)*str_num+1;
+	int grid_height=(cell_height+1)*row_num+1;
 	int grid_width=(cell_width+1)*col_num+1;
 
 	for (ypos=0;ypos<grid_width;ypos++){
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]){
 
 	cell_height=atoi(argv[3]);
 	cell_width=atoi(argv[4]);
-	str_num=atoi(argv[5]);
+	row_num=atoi(argv[5]);
 	col_num=atoi(argv[6]);
 	draw_grid();
 	show(pimg);
